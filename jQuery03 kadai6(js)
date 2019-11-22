@@ -1,0 +1,19 @@
+(function($, window) {
+  $(function() {
+        PostCode();
+    });
+})(jQuery, window);
+
+function PostCode(){
+    $('#zip1').jpostal({
+        click : '#add',
+        postcode : [
+            '#zip1',"#zip2"
+        ],
+        address : {
+            '#pref'  : '%3',
+            '#city'  : '%4',
+            '#street'  : '%5'
+        }
+    });
+}
