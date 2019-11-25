@@ -8,6 +8,7 @@ if($name == "takamasa"){
  echo "これは私の名前ではありません";
 }
 
+$sum = 0;
 for($i=1;$i<=10000;$i++){
  $sum+=$i;
 }
