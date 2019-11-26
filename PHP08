@@ -1,0 +1,49 @@
+ControllerとRoutingについて聞きたいこと
+
+・自分で1からControllerとRoutingを作ることができるのか
+・どのようにしてControllerやRoutingを自作できるようなスキルを身につければ良いか。
+・どれくらい大事なのか
+・やはり使用頻度はかなり高い？
+
+
+
+
+ControllerとRoutingの役割
+
+・Routingが受けとったユーザーからのアクセスを渡される。
+・Controllerの中には複数のActionが含まれている。
+・Controllerの中にActionを作ってRoutingでそのActionに割り当てれば良い。
+
+
+【応用】
+
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class ProfileController extends Controller
+{
+    //
+     public function add()
+    {
+        return view('admin.profile.create');
+    }
+
+    public function create()
+    {
+        return redirect('admin/profile/create');
+    }
+
+    public function edit()
+    {
+        return view('admin.profile.edit');
+    }
+
+    public function update()
+    {
+        return redirect('admin/profile/edit');
+    }
+}
