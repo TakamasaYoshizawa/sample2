@@ -1,0 +1,42 @@
+web.php
+
+
+<?php
+
+Route::group(['prefix' => 'admin'],function(){
+    Route::get('news/create','Admin\NewsController@add');
+    Route::get('profile/create','Admin\ProfileController@add');
+    Route::get('profile/edit','Admin\ProfileController@edit');
+});
+
+edit.blade.php
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>MyNews</title>
+    </head>
+    <body>
+        <h1>editAction</h1>
+    </body>
+</html>
+
+create.blade.php
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>MyNews</title>
+    </head>
+    <body>
+        <h1>add Action</h1>
+    </body>
+</html>
