@@ -1,0 +1,50 @@
+・resources/views/admin/profile/create.blade.php
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>MyNews</title>
+    </head>
+    <body>
+        <h1>add Action</h1>
+        
+                {{-- layouts/profile.blade.phpを読み込む --}}
+@extends('layouts.profile')
+
+
+{{-- profile.blade.phpの@yield('title')に'ニュースの新規作成'を埋め込む --}}
+@section('title', 'プロフィールの新規作成')
+
+{{-- profile.blade.phpの@yield('content')に以下のタグを埋め込む --}}
+@section('content')
+    </body>
+</html>
+
+
+・webpack.mix.js
+
+const mix = require('laravel-mix');
+
+/*
+ |--------------------------------------------------------------------------
+ | Mix Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Mix provides a clean, fluent API for defining some Webpack build steps
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for the application as well as bundling up all the JS files.
+ |
+ */
+
+mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/admin.scss', 'public/css')
+    .sass('resources/sass/profile.scss', 'public/css');
+    
+    
+
+
