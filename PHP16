@@ -1,0 +1,139 @@
+【/admin/profile/edit】
+
+@extends('layouts.profile')
+@section('title', 'プロフィール編集')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2>プロフィール編集</h2>
+                <form action="{{ action('Admin\ProfileController@update') }}" method="post" enctype="multipart/form-data">
+                    @if (count($errors) > 0)
+                        <ul>
+                            @foreach($errors->all() as $e)
+                                <li>{{ $e }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    <div class="form-group row">
+                        <label class="col-md-2" for="title">氏名</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="name" value="{{ $profile_form->title }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-md-2" for="title">性別</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="gender" value="{{ $profile_form->title }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-md-2" for="title">趣味</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="gender" value="{{ $profile_form->title }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-md-2" for="body">自己紹介欄</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="introduction" rows="20">{{ $profile_form->body }}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <input type="hidden" name="id" value="{{ $profile_form->id }}">
+                            {{ csrf_field() }}
+                            <input type="submit" class="btn btn-primary" value="更新">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+
+【ProfileController】
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Profile;
+
+class ProfileController extends Controller
+{
+    //
+        public function add()
+    {
+        return view('admin.profile.create');
+    }
+
+    public function create(Request $request)
+    {
+        $this->validate($request, Profile::$rules);
+        
+        $profile = new Profile;
+        $form = $request->all();
+        
+        
+        unset($form['_token']);
+        
+        $profile->fill($form);
+        $profile->save();
+        
+        return redirect('admin/profile/create');
+    }
+    
+    public function index (Request $request)
+    {
+        $cond_name = $request->cond_name;
+        if ($cond_name != ''){
+            $posts = Profile::where('name', $cond_name)->get();
+        } else {
+            $posts = Profile::all();
+        }
+        return view('admin.profile.index',['posts' =>$posts, 'cond_name' => $cond_name]);
+    }
+
+    public function edit(Request $request)
+    {
+        $profile = Profile::find($request->id);
+        if (empty($profile)){
+            abort(404);
+        }
+        return view('admin.profile.edit', ['profile_form' => $profile]);
+    }
+
+    public function update(Request $request)
+    {
+        $this ->validate($request, Profile::$rules);
+        $profile = Profile::find($request->id);
+        
+        $profile_form = $request->all();
+        if(isset($profile_form['image'])){
+            $path = $request->file('image')->store('public/image');
+            $profile->image_path = basename($path);
+            unset($profile_form['image']);
+        } elseif(isset($request->remove)) {
+            $profile->image_path = null;
+            unset($profile_form['remove']);
+        }
+        unset($profile_form['_token']);
+        $profile->fill($profile_form)->save();
+        return redirect('admin/profile/edit');
+    }
+    
+    public function delete(Request $request){
+        $profile = Profile::find($request->id);
+        $profile->delete();
+        return redirect('admin/profile/');
+    }
+}
+	
